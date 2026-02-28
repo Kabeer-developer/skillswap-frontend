@@ -5,7 +5,9 @@ function useSocket(barterId, onMessageReceived) {
   const socketRef = useRef(null);
 
   useEffect(() => {
-    socketRef.current = io(import.meta.env.VITE_API_URL);
+    socketRef.current = io(import.meta.env.VITE_API_URL, {
+      transports: ["polling"],
+    });
 
     if (barterId) {
       socketRef.current.emit("joinRoom", barterId);
