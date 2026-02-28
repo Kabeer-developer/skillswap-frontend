@@ -5,8 +5,7 @@ export const fetchSkills = createAsyncThunk(
   "skills/fetchSkills",
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await fetchSkillsAPI(token);
+      return await fetchSkillsAPI();
     } catch (error) {
       return thunkAPI.rejectWithValue("Failed to fetch skills");
     }
@@ -17,8 +16,7 @@ export const createSkill = createAsyncThunk(
   "skills/createSkill",
   async (skillData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await createSkillAPI(skillData, token);
+      return await createSkillAPI(skillData);
     } catch (error) {
       return thunkAPI.rejectWithValue("Failed to create skill");
     }

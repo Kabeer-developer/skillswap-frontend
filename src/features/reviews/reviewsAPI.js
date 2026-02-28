@@ -1,15 +1,11 @@
-import axios from "axios";
+import api from "../../api/axiosInstance";
 
-const API_URL = "http://localhost:5000/api/reviews";
-
-export const createReviewAPI = async (data, token) => {
-  const res = await axios.post(API_URL, data, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const createReviewAPI = async (data) => {
+  const res = await api.post("/api/reviews", data);
   return res.data;
 };
 
 export const fetchReviewsAPI = async (userId) => {
-  const res = await axios.get(`${API_URL}/${userId}`);
+  const res = await api.get(`/api/reviews/${userId}`);
   return res.data;
 };

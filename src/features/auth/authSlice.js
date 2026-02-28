@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api from "../../api/axiosInstance";
 import { registerUserAPI, loginUserAPI } from "./authAPI";
 
-// Load from localStorage
 const userFromStorage = JSON.parse(localStorage.getItem("user"));
 
 // ================= REGISTER =================
@@ -37,22 +36,12 @@ export const login = createAsyncThunk(
   }
 );
 
-// ================= FETCH PROFILE (🔥 NEW) =================
+// ================= FETCH PROFILE =================
 export const fetchProfile = createAsyncThunk(
   "auth/fetchProfile",
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-
-      const res = await axios.get(
-        "http://localhost:5000/api/users/profile",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const res = await api.get("/api/users/profile");
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -109,18 +98,10 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-      // 🔥 FETCH PROFILE
+      // FETCH PROFILE
       .addCase(fetchProfile.fulfilled, (state, action) => {
-        state.user = {
-          ...state.user,
-          ...action.payload,
-        };
-
-        // keep localStorage updated
-        localStorage.setItem(
-          "user",
-          JSON.stringify(state.user)
-        );
+        state.user = { ...state.user, ...action.payload };
+        localStorage.setItem("user", JSON.stringify(state.user));
       });
   },
 });

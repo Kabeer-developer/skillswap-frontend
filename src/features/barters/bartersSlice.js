@@ -11,8 +11,7 @@ export const fetchBarters = createAsyncThunk(
   "barters/fetch",
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await fetchBartersAPI(token);
+      return await fetchBartersAPI();
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Failed to fetch barters"
@@ -26,8 +25,7 @@ export const createBarter = createAsyncThunk(
   "barters/create",
   async (data, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await createBarterAPI(data, token);
+      return await createBarterAPI(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Action not allowed"
@@ -41,8 +39,7 @@ export const updateBarterStatus = createAsyncThunk(
   "barters/updateStatus",
   async ({ id, status }, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await updateBarterStatusAPI(id, status, token);
+      return await updateBarterStatusAPI(id, status);
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Action not allowed"
@@ -56,8 +53,7 @@ export const scheduleSession = createAsyncThunk(
   "barters/schedule",
   async ({ id, data }, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await scheduleSessionAPI(id, data, token);
+      return await scheduleSessionAPI(id, data);
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Action not allowed"
@@ -110,9 +106,7 @@ const bartersSlice = createSlice({
         const index = state.barters.findIndex(
           (b) => b._id === action.payload._id
         );
-        if (index !== -1) {
-          state.barters[index] = action.payload;
-        }
+        if (index !== -1) state.barters[index] = action.payload;
         state.error = null;
       })
       .addCase(updateBarterStatus.rejected, (state, action) => {
@@ -124,9 +118,7 @@ const bartersSlice = createSlice({
         const index = state.barters.findIndex(
           (b) => b._id === action.payload._id
         );
-        if (index !== -1) {
-          state.barters[index] = action.payload;
-        }
+        if (index !== -1) state.barters[index] = action.payload;
         state.error = null;
       })
       .addCase(scheduleSession.rejected, (state, action) => {

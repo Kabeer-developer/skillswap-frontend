@@ -1,17 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const API_URL = "http://localhost:5000/api/messages";
+import api from "../../api/axiosInstance";
 
 export const fetchMessages = createAsyncThunk(
   "chat/fetchMessages",
-  async (barterId, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
-
-    const res = await axios.get(`${API_URL}/${barterId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
+  async (barterId) => {
+    const res = await api.get(`/api/messages/${barterId}`);
     return res.data;
   }
 );
